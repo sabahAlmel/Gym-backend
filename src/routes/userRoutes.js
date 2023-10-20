@@ -1,9 +1,10 @@
 import express from "express"
-import { addUser, getUsers } from "../controllers/userController.js"
-import { checkPass, checkUsername } from "../middlewares/userMiddleware.js"
+import { addUser, deleteUser, getUsers } from "../controllers/userController.js"
+import { checkPass, checkUserID, checkUsername } from "../middlewares/userMiddleware.js"
 const userRouter = express.Router()
 
 userRouter.get('/read', getUsers)
 userRouter.post('/add', checkUsername, checkPass, addUser)
+userRouter.delete('/delete',checkUserID, deleteUser)
 
 export default userRouter

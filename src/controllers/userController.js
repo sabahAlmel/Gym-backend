@@ -15,3 +15,15 @@ export async function addUser(req,res){
         await user.save()
         res.json({message: "New User Have Been Added"})
 }
+
+export async function deleteUser(req, res){
+    const {userID} = req.body
+
+    try {
+        await User.deleteOne({ _id: userID });
+        res.json({message: "User has been deleted succesfully"})
+    } catch (error) {
+        console.log(error)
+    }
+    
+}

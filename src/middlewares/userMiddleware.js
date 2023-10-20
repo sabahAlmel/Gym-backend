@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb"
 import userModel from "../models/userModel.js"
 import { isStrong } from "../utils/helper.js"
 
@@ -23,5 +24,19 @@ export async function checkUsername(req,res,next){
             next()
         }else{
             res.json({message: "Password should contain at least 8 characters, one uppercase, one lowercase, one digit, one special character"}) 
+        }
+    }
+    // middleware to check the existance of user id when deleting
+    export async function checkUserID(req,res,next){
+        const {userID} = req.body
+        if(!userID){
+            res.json({message: "userID is not provided"})
+        }else{
+            try {
+                 await userModel.findOne({_id: req.body.userID})
+                 next()
+            } catch (error) {
+             res.status(500).json({message: 'Bad request'})   
+            }
         }
     }
