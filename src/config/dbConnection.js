@@ -15,18 +15,5 @@ async function dbConnect() {
 
 
 
-
-
-
-//database connection 
-// const url = process.env.URL
-
-// console.log(url)
-
-// async function dbConnect() {
-//     await mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true });
-// }
-
-
 export default dbConnect;
 
