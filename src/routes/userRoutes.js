@@ -1,7 +1,9 @@
 import express from "express"
-import { getUsers } from "../controllers/userController.js"
+import { addUser, getUsers } from "../controllers/userController.js"
+import { checkPass, checkUsername } from "../middlewares/userMiddleware.js"
 const userRouter = express.Router()
 
-export default userRouter.get('/read', getUsers)
+userRouter.get('/read', getUsers)
+userRouter.post('/add', checkUsername, checkPass, addUser)
 
-
+export default userRouter
