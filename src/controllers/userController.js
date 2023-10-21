@@ -29,7 +29,6 @@ export async function deleteUser(req, res) {
 export async function updateUser(req, res) {
     const userID = req.body.userID;
     const initalUser = await User.find({ _id: userID })
-    console.log("UPDATE USER")
     const userData = initalUser[0]
   const {
     password = userData.password,
@@ -45,5 +44,23 @@ export async function updateUser(req, res) {
     res.json({ message: "User has been updated" });
   } catch (error) {
     console.log(error);
+  }
+}
+
+export async function changeRole(req,res){
+  try{
+    const target = await User.findOneAndUpdate({_id: req.body.userID},{role: req.body.role} )
+    res.json({message: `The role for ${target.username} has been updated`})
+  }catch(error){
+    console.log(error)
+  }
+
+}
+export async function changeMembership(req,res){
+  try {
+    const target = await User.findOneAndUpdate({_id: req.body.userID}, {sub_plan: req.body.sub_plan} )
+    res.json({message: `${target.username} has subscribed with ${req.body.sub_plan} plan`})
+  } catch (error) {
+    console.log(error)
   }
 }

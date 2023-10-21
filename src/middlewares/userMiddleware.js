@@ -45,7 +45,6 @@ export async function checkUserID(req, res, next) {
 export function updatePass(req, res, next) {
   const password = req.body.password;
   if (!password) {
-    console.log("next");
     next();
   } else {
     isStrong(password)
