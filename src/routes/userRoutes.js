@@ -1,10 +1,10 @@
 import express from "express"
 import { addUser, changeRole, deleteUser, getUsers, updateUser, changeMembership  } from "../controllers/userController.js"
-import { checkPass, checkUserID, checkUsername, updatePass} from "../middlewares/userMiddleware.js"
+import { validatePass, checkUserID, checkUsername, updatePass, validateUsername} from "../middlewares/userMiddleware.js"
 const userRouter = express.Router()
 
 userRouter.get('/read', getUsers)
-userRouter.post('/add', checkUsername, checkPass, addUser)
+userRouter.post('/add', checkUsername, validateUsername,validatePass, addUser)
 userRouter.delete('/delete',checkUserID, deleteUser)
 userRouter.patch('/update',checkUserID, updatePass, updateUser)
 userRouter.patch('/update/role', checkUserID, changeRole)

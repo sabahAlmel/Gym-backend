@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import userModel from "../models/userModel.js";
-import { isStrong } from "../utils/helper.js";
+import { isStrong, isUsernameOk } from "../utils/helper.js";
 
 //middleware to check if the username is available or already taken
 export async function checkUsername(req, res, next) {
@@ -15,8 +15,19 @@ export async function checkUsername(req, res, next) {
     console.log(error);
   }
 }
+export function validateUsername(req, res, next) {
+  const { username } = req.body;
+  isUsernameOk(username)
+    ? next()
+    : res
+        .status(500)
+        .json({
+          message:
+            "username should consist of at least 8 characters, must include at least one number, with no special characters  ",
+        });
+}
 // middleware to handle errors of password
-export function checkPass(req, res, next) {
+export function validatePass(req, res, next) {
   const { password } = req.body;
   !password && res.status(500).json({ message: "Please add a password" });
   if (isStrong(password)) {
@@ -24,7 +35,7 @@ export function checkPass(req, res, next) {
   } else {
     res.json({
       message:
-        "Password should contain at least 8 characters, one uppercase, one lowercase, one digit, one special character",
+        "Password should contain at least 6 characters, one uppercase, one lowercase, one digit, one special character",
     });
   }
 }
