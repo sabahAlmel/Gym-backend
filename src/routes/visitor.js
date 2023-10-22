@@ -1,29 +1,25 @@
 import express from "express";
-import Visitor from "../../src/models/visitormodel.js";
 import { createvisitor } from "../controllers/visitorcontroller.js";
 import { getallvisitors } from "../controllers/visitorcontroller.js";
 import { getsinglevisitor } from "../controllers/visitorcontroller.js";
 import { deletevisitor } from "../controllers/visitorcontroller.js";
 
-const router = express.Router()
+const visitorRouter = express.Router();
 
-// get all visitor 
+// get all visitor
 
-router.get('/',getallvisitors)
+visitorRouter.get("/", getallvisitors);
 
+// get single visitor
 
-// get single visitor 
+visitorRouter.get("/:id", getsinglevisitor);
 
-router.get('/:id', getsinglevisitor)
+//post a new visitor
+visitorRouter.post("/", createvisitor);
 
+//delete visitor
 
-//post a new visitor 
-router.post('/', createvisitor )
+visitorRouter.delete("/:id", deletevisitor);
 
-
-//delete visitor 
-
-router.delete('/:id',deletevisitor)
-
-// module.exports =router;
-export default router ;
+// module.exports =visitorRouter;
+export default visitorRouter;

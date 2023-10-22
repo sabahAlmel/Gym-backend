@@ -97,8 +97,6 @@ try {
 
 
 
-export { createvisitor }
-export{getallvisitors}
-export{getsinglevisitor}
-export{deletevisitor}
+export { createvisitor, getallvisitors, getsinglevisitor, deletevisitor }
+
 

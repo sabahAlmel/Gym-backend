@@ -15,6 +15,7 @@ export async function checkUsername(req, res, next) {
     console.log(error);
   }
 }
+// function to validate the user and check if it meats the username criteria
 export function validateUsername(req, res, next) {
   const { username } = req.body;
   isUsernameOk(username)
@@ -53,6 +54,7 @@ export async function checkUserID(req, res, next) {
     }
   }
 }
+// validate the password when updating
 export function updatePass(req, res, next) {
   const password = req.body.password;
   if (!password) {
