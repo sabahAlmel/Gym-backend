@@ -5,12 +5,12 @@ import regimeRouter from "./src/routes/regimeRouter.js";
 // import productsRouter from "./src/routes/productsRouter.js";
 // import socialsRouter from "./src/routes/socialsRouter.js";
 // import gymPlansRouter from "./src/routes/gymplansRouter.js";
-// import multer from "multer";
-// import {gridFsStorage} from 
 import 'dotenv/config'
+
+import express from "express";
+
+
 const app = express()
-dbConnect()
-const port = process.env.PORT
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
