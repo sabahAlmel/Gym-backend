@@ -15,7 +15,6 @@ const prodSchema = new Schema({
         },
         prodImage: {
             type: String,
-            type: Blob,
             required: true
         }
     }

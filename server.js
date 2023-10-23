@@ -9,16 +9,15 @@ import productsRouter from "./src/routes/productsRouter.js";
 
 import 'dotenv/config'
 
-import express from "express";
 
 const app = express()
 
 
-dbconnect()
+dbConnect()
 
 app.use(express.json())
 
-
+const port = process.env.PORT
 
 
 app.listen(port, () => {
