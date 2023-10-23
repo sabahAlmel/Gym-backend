@@ -1,6 +1,6 @@
-// import { ObjectId } from "mongodb";
-// import userModel from "../models/userModel.js";
-// import { isStrong, isUsernameOk } from "../utils/helper.js";
+// // import { ObjectId } from "mongodb";
+// // import userModel from "../models/userModel.js";
+// // import { isStrong, isUsernameOk } from "../utils/helper.js";
 
 // //middleware to check if the username is available or already taken
 // export async function checkUsername(req, res, next) {
@@ -66,5 +66,25 @@
 //           message:
 //             "Password should contain at least 8 characters, one uppercase, one lowercase, one digit, one special character",
 //         });
+//   }
+// }
+// export async function signInUser(req,res,next){
+//   const {username} = req.body
+//   const targetUsername = await userModel.findOne({username: username})
+//   console.log(targetUsername)
+//   if(targetUsername){
+//     next()
+//   }else{
+//     res.status(404).json({message: 'Account not Found'})
+//   }
+// }
+// export async function signInPass(req,res,next){
+//   const {username, password} = req.body
+//   const targetUsername = await userModel.findOne({username: username})
+//   const isMatched = password === targetUsername.password
+//   if(isMatched){
+//     next()
+//   }else{
+//     res.status(404).json({message: 'Wrong Password'})
 //   }
 // }
