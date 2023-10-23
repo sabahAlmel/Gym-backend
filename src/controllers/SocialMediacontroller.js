@@ -1,47 +1,43 @@
-import Visitor from "../../src/models/visitormodel.js";
+import socialmedia from "../models/SocialmediaModel.js";
 //create new visitor
 
-const createvisitor = async(req,res) =>{
+const createSocialMedia = async(req,res) =>{
 
-    const { First_Name, Last_Name, Phone_Number, Email, Message } = req.body;
+    const { instagram ,facebook, whatsapp ,youtube } = req.body;
 
     // Check if required fields are present in the request body
-    if (!First_Name || !Last_Name || !Phone_Number || !Email || !Message) {
-        return res.status(400).json({ error: "All fields are required" });
-    }
-
     try {
         // Create a new visitor using the Visitor model and save it to the database
-        const newVisitor = await Visitor.create({
-            First_Name,
-            Last_Name,
-            Phone_Number,
-            Email,
-            Message
+        const newlink = new socialmedia({
+            instagram,
+            facebook,
+            whatsapp,
+            youtube
         });
+        await newlink.save()
 
         // Respond with the newly created visitor object
-        res.status(201).json(newVisitor);
+        res.status(201).json(newlink);
     } catch (error) {
         // Handle errors, such as validation errors or database connection issues
-        console.error("Error saving visitor data:", error);
+        console.error("Error saving social link data:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
 
 
-//get all visitor 
-const getallvisitors = async(req,res) =>{
+//get all  social media
+const getsocialmedia = async(req,res) =>{
 try {
     // Find all visitors in the database
-    const visitors = await Visitor.find();
+    const socialMedias = await socialmedia.find();
 
     // Respond with the array of visitor objects
-    res.status(200).json(visitors);
+    res.status(200).json(socialMedias);
 } catch (error) {
     // Handle errors, such as database errors
-    console.error("Error getting visitors:", error);
+    console.error("Error getting social media:", error);
     res.status(500).json({ error: "Internal Server Error" });
 }}
 
@@ -50,53 +46,53 @@ try {
 
 
 // get single visitor
-const getsinglevisitor = async(req,res)=>{
-const visitorId = req.params.id;
+const getSingleSocialmedia = async(req,res)=>{
+const {SocialMediaId} = req.body;
     
 try {
     // Find the visitor by ID in the database
-    const visitor = await Visitor.findById(visitorId);
+    const Socialmedia = await socialmedia.findById(SocialMediaId);
 
-    if (visitor) {
+    if (Socialmedia) {
         // If the visitor is found, respond with their information
-        res.status(200).json(visitor);
+        res.status(200).json(Socialmedia);
     } else {
         // If the visitor with the given ID was not found, respond with a 404 Not Found status
         res.status(404).json({ message: 'Visitor not found' });
     }
 } catch (error) {
     // Handle errors, such as database errors or invalid ID format
-    console.error("Error getting visitor:", error);
+    console.error("Error getting social media:", error);
     res.status(500).json({ error: "Internal Server Error" });
 }}
 
 
 // delete visitor 
 
-const  deletevisitor = async(req,res) =>{
+const  deletesocialMedia = async(req,res) =>{
 
-  const visitorId = req.params.id;
+  const socialmediaid = req.params.id;
 
 try {
     // Find the visitor by ID and remove it from the database
-    const deletedVisitor = await Visitor.findByIdAndDelete(visitorId);
+    const deletedsocialmedia = await socialmedia.findByIdAndDelete(socialmediaid);
 
     // If the visitor was found and deleted, respond with a success message
-    if (deletedVisitor) {
-        res.status(200).json({ message: 'Visitor deleted successfully' });
+    if (deletedsocialmedia) {
+        res.status(200).json({ message: 'social media deleted successfully' });
     } else {
         // If the visitor with the given ID was not found, respond with a 404 Not Found status
-        res.status(404).json({ message: 'Visitor not found' });
+        res.status(404).json({ message: 'social media  not found' });
     }
 } catch (error) {
     // Handle errors, such as database errors or invalid ID format
-    console.error("Error deleting visitor:", error);
+    console.error("Error deleting social media:", error);
     res.status(500).json({ error: "Internal Server Error" });
 }
 }
 
 
 
-export { createvisitor, getallvisitors, getsinglevisitor, deletevisitor }
+export { createSocialMedia, getsocialmedia, getSingleSocialmedia, deletesocialMedia }
 
 
