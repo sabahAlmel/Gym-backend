@@ -1,8 +1,11 @@
-import product from '../models/productModel'
+
+import product from '../models/productModel.js'
 
 //create product
 const createProd = async (req, res) => {
-    const { prodName, prodPrice, prodImage } = req.body
+    const { prodName, prodPrice } = req.body
+    const prodImage = req.file.path
+
     if (!prodName || !prodPrice || !prodImage)
         return res.status(400).send('All fields are required!')
 
@@ -12,7 +15,8 @@ const createProd = async (req, res) => {
             prodPrice,
             prodImage
         })
-        res.status(201).send(newProd)
+        res.status(201).json({ data: newProd })
+
     }
     catch(error) {
         console.log('Error in saving data: ', error)
@@ -66,11 +70,15 @@ const removeProd = async (req, res) => {
 
 //update a product
 const editProd = async (req, res) => {
+
+    const { prodName, prodPrice, prodImage } = req.body
+
     const prodId = req.body.id
     if (!prodName || !prodPrice || !prodImage)
         return res.status(400).send('All fields are required!')
 
     try {
+
         const updateProd = await product.findOneAndUpdate({ prodId: prodId }, { prodName: req.body.prodName }, { prodPrice: req.body.prodPrice }, { prodImage: req.body.prodImage })
         if (!updateProd)
             res.status(404).send(`Product ${prodId} is not found!`)
