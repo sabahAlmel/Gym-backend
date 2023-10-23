@@ -7,10 +7,17 @@ import mongoose from "mongoose";
 async function dbConnect() {
     try {
         await mongoose.connect(process.env.URL)
+        
     } catch (err) {
         console.log(err)
+        await mongoose.connect(process.env.URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log("Connected to MongoDB");
     }
-}
+    }
+    
 
 
 
