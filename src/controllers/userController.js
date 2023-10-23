@@ -64,3 +64,7 @@ export async function changeMembership(req,res){
     console.log(error)
   }
 }
+export async function signIn(req, res){
+  const {username, password} = req.body
+  res.json({message: `username: ${username}// password: ${password}`})
+}

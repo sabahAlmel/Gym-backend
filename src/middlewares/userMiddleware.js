@@ -68,3 +68,23 @@ export function updatePass(req, res, next) {
         });
   }
 }
+export async function signInUser(req,res,next){
+  const {username} = req.body
+  const targetUsername = await userModel.findOne({username: username})
+  console.log(targetUsername)
+  if(targetUsername){
+    next()
+  }else{
+    res.status(404).json({message: 'Account not Found'})
+  }
+}
+export async function signInPass(req,res,next){
+  const {username, password} = req.body
+  const targetUsername = await userModel.findOne({username: username})
+  const isMatched = password === targetUsername.password
+  if(isMatched){
+    next()
+  }else{
+    res.status(404).json({message: 'Wrong Password'})
+  }
+}
