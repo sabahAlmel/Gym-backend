@@ -1,6 +1,9 @@
 import mongoose from "mongoose"
 
-const prodSchema = mongoose.Schema(
+
+const {Schema , model} =mongoose
+
+const prodSchema = new Schema(
     {
         prodName: {
             type: String,
@@ -11,10 +14,12 @@ const prodSchema = mongoose.Schema(
             required: true
         },
         prodImage: {
-            type: Blob,
+            type: String,
             required: true
         }
     }
 )
 
-export const prod = mongoose.model()
+ const prod = model("Product", prodSchema)
+
+ export default prod

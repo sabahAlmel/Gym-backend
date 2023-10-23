@@ -1,16 +1,17 @@
 import express from 'express'
-import { createProd } from '../controllers/productController'
-import { getAllProds } from '../controllers/productController'
-import { getOneProd } from '../controllers/productController'
-import { removeProd } from '../controllers/productController'
-import { editProd } from '../controllers/productController'
+import upload from '../middlewares/upload.js'
+import { createProd } from '../controllers/productController.js'
+import { getAllProds } from '../controllers/productController.js'
+import { getOneProd } from '../controllers/productController.js'
+import { removeProd } from '../controllers/productController.js'
+import { editProd } from '../controllers/productController.js'
 
-const productRouter = express.Router()
+const router = express.Router()
 
-router.post('/create', createProd)
+router.post('/create', upload.single('prodImage'), createProd)
 router.get('/show-all', getAllProds)
 router.get('/show-one/:id', getOneProd)
-router.patch('/edit/:id', editProd)
+router.put('/edit/:id', editProd)
 router.delete('/delete/:id', removeProd)
 
-export default productRouter
+export default router
