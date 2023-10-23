@@ -1,10 +1,10 @@
 import mongoose from "mongoose"
 
 
+
 const {Schema , model} =mongoose
 
-const prodSchema = new Schema(
-    {
+const prodSchema = new Schema({
         prodName: {
             type: String,
             required: true
@@ -15,11 +15,14 @@ const prodSchema = new Schema(
         },
         prodImage: {
             type: String,
+            type: Blob,
             required: true
         }
     }
 )
 
+
  const prod = model("Product", prodSchema)
 
- export default prod
+export default model('Product', prodSchema)
+

@@ -1,15 +1,35 @@
-import express from 'express'
-import dbconnect from './src/config/dbConnection.js'
-import router from './src/routes/productRoutes.js'
 
+import express, { urlencoded } from "express";
+import dbConnect from "./src/config/dbConnection.js";
+// import trainingRouter from "./src/routes/trainingRouter.js";
+import regimeRouter from "./src/routes/regimeRouter.js";
+import productsRouter from "./src/routes/productsRouter.js";
+// import socialsRouter from "./src/routes/socialsRouter.js";
+// import gymPlansRouter from "./src/routes/gymplansRouter.js";
+
+import 'dotenv/config'
+
+import express from "express";
 
 const app = express()
+
 
 dbconnect()
 
 app.use(express.json())
-app.use('/product', router)
 
-app.listen(5000, ()=>{
-    console.log(`Listening on port 5000`)
+
+
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+
 })
+
+app.use(express.json()); 
+app.use(urlencoded({extended: true}))
+// app.use('/training',trainingRouter)
+app.use('/regime', regimeRouter)
+app.use('/products',productsRouter)
+// app.use('/socials',socialsRouter)
+// app.use('/gymPlans',gymPlansRouter)
