@@ -4,7 +4,7 @@ import fs from 'fs'
 
 const uploadDir = 'images'
 if (!fs.existsSync(uploadDir))
-    fs.mkdirSync(uploadDir)
+    fs.mkdirSync(uploadDir) 
 
 const storate = multer.diskStorage ({
     destination: function(req, file, cb) {
