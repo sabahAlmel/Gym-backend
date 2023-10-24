@@ -25,4 +25,6 @@ socialRouter.delete("/:id", deletesocialMedia);
 socialRouter.patch('/:id', updatesocialmedia)
 
 // module.exports =visitorRouter;
+
+
 export default socialRouter;

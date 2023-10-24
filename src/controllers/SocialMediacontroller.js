@@ -125,4 +125,5 @@ const updatesocialmedia = async (req, res) => {
 
 
 
+
 export { createSocialMedia, getsocialmedia, getSingleSocialmedia, deletesocialMedia ,updatesocialmedia}
