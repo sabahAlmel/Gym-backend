@@ -10,7 +10,7 @@ async function dbconnect() {
         console.log("Connected to MongoDB")
     }
     catch (error) {
-        console.log("Error conntecting to Database: ", error)
+        console.log("Error connecting to Database: ", error)
     }
 }
 
