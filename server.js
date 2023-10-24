@@ -5,7 +5,7 @@ import trainingRouter from "./src/routes/trainingRouter.js";
 import regimeRouter from "./src/routes/regimeRouter.js";
 import productsRouter from "./src/routes/productsRouter.js";
 import socialsRouter from "./src/routes/socialsRouter.js";
-import gymPlansRouter from "./src/routes/gymplansRouter.js";
+import gymPlansRouter from "./src/routes/gymPlansRouter.js";
 
 import "dotenv/config";
 
