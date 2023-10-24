@@ -58,7 +58,7 @@ try {
         res.status(200).json(Socialmedia);
     } else {
         // If the visitor with the given ID was not found, respond with a 404 Not Found status
-        res.status(404).json({ message: 'Visitor not found' });
+        res.status(404).json({ message: 'social media  not found' });
     }
 } catch (error) {
     // Handle errors, such as database errors or invalid ID format
@@ -67,7 +67,7 @@ try {
 }}
 
 
-// delete visitor 
+// delete  social media
 
 const  deletesocialMedia = async(req,res) =>{
 
@@ -92,7 +92,39 @@ try {
 }
 
 
+//update social media 
 
-export { createSocialMedia, getsocialmedia, getSingleSocialmedia, deletesocialMedia }
+const updatesocialmedia = async (req, res) => {
+    const { id } = req.params; // Assuming the social media ID is in the route parameter
+    const updateFields = req.body; // Fields to update, sent in the request body
+
+    try {
+        // Check if the social media entry with the given ID exists
+        const existingSocialmedia = await socialmedia.findById(id);
+
+        if (existingSocialmedia) {
+            // If the social media entry exists, proceed with the update
+            const updatedSocialmedia = await socialmedia.findByIdAndUpdate(
+                id,
+                updateFields,
+                { new: true } // To get the updated document in the response
+            );
+
+            // Respond with the updated social media data
+            res.status(200).json(updatedSocialmedia);
+        } else {
+            // If the social media entry with the given ID was not found, respond with a 404 Not Found status
+            res.status(404).json({ message: 'Social media not found' });
+        }
+    } catch (error) {
+        // Handle errors, such as database errors, validation errors, or invalid ID format
+        console.error("Error updating social media:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+
+export { createSocialMedia, getsocialmedia, getSingleSocialmedia, deletesocialMedia ,updatesocialmedia}
 
 
