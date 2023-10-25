@@ -53,7 +53,8 @@ export async function updateTraining(req, res) {
     try {
       const data = await Training.findOneAndUpdate(
         { _id: id },
-        { name: name, description: description, image: trainingImg }
+        { name: name, description: description, image: trainingImg },
+        {new: true}
       );
       res.json({ data: data });
     } catch (error) {
