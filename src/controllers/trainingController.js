@@ -1,4 +1,3 @@
-import trainingModel from "../models/trainingModel.js";
 import Training from "../models/trainingModel.js";
 
 export async function getTrainingServices(req, res) {
@@ -26,16 +25,21 @@ export async function addTrainingService(req, res) {
 }
 export async function deleteTraining(req, res) {
   const id = req.body.id;
-  try {
-    const target = await Training.findOne({ _id: id });
-    if (target) {
-      await Training.deleteOne(target);
-    } else {
-      res.json({ message: `No element with the id ${id}` });
+  if (id) {
+    try {
+      const target = await Training.findOne({ _id: id });
+      if (target) {
+        await Training.deleteOne(target);
+      } else {
+        res.json({ message: `No element with the id ${id}` });
+      }
+      res.json({ message: "Deleted successfuly" });
+    } catch (error) {
+      console.log(error);
+      res.json({message: `No Training service with the id ${id}`})
     }
-    res.json({ message: "Deleted successfuly" });
-  } catch (error) {
-    console.log(error);
+  } else {
+    res.json({ message: "Provide and id" });
   }
 }
 

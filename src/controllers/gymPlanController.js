@@ -52,7 +52,7 @@ export const getGymPlanById = async (req, res) => {
 
 // delete by id
 export const deleteGymPlan = async (req, res) => {
-  const planId = req.params.id;
+  const planId = req.body.id;
   try {
     const deletGymPlan = await GymPlan.findOneAndDelete(planId);
     if(deletGymPlan){
@@ -69,7 +69,7 @@ export const deleteGymPlan = async (req, res) => {
 //update plan
 export const updateGymPlan = async (req,res)=>{
   const {title , price , feature} = req.body
-  const planId = req.params.id;
+  const planId = req.body.id;
   if(!title || !price || !feature)
     return res.status(400).json({mssg:'fields are required'})
   try{

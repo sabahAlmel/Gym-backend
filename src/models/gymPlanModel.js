@@ -11,7 +11,7 @@ const gymPlanSchema = new Schema({
         required:true,
     },
     feature:{
-        type: [],
+        type: [String],
         required:true
     }
     

@@ -71,11 +71,11 @@ try {
 
 const  deletesocialMedia = async(req,res) =>{
 
-  const socialmediaid = req.params.id;
+  const id = req.body.id;
 
 try {
     // Find the visitor by ID and remove it from the database
-    const deletedsocialmedia = await socialmedia.findByIdAndDelete(socialmediaid);
+    const deletedsocialmedia = await socialmedia.findByIdAndDelete(id);
 
     // If the visitor was found and deleted, respond with a success message
     if (deletedsocialmedia) {
@@ -95,7 +95,7 @@ try {
 //update social media 
 
 const updatesocialmedia = async (req, res) => {
-    const { id } = req.params; // Assuming the social media ID is in the route parameter
+    const { id } = req.body; // Assuming the social media ID is in the route parameter
     const updateFields = req.body; // Fields to update, sent in the request body
 
     try {

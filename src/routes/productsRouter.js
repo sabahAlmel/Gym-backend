@@ -10,11 +10,11 @@ import { editProd } from '../controllers/productController.js'
 
 const productRouter = express.Router()
 
-productRouter.post('/create', upload.single('prodImage'), createProd)
-productRouter.get('/show-all', getAllProds)
+productRouter.post('/add', upload.array('prodImage'), createProd)
+productRouter.get('/read', getAllProds)
 productRouter.get('/show-one/:id', getOneProd)
-productRouter.patch('/edit/:id', editProd)
-productRouter.delete('/delete/:id', removeProd)
+productRouter.patch('/update', upload.array('prodImage'), editProd)
+productRouter.delete('/delete', removeProd)
 
 export default productRouter
 

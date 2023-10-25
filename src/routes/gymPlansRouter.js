@@ -11,8 +11,8 @@ const gymPlanRouter = express.Router()
 gymPlanRouter.post('/add' , createGymPlan)
 gymPlanRouter.get('/read', getAllGymPlans)
 gymPlanRouter.get('/read/id',getGymPlanById)
-gymPlanRouter.delete('/delete/:id',deleteGymPlan)
-gymPlanRouter.put('/update/:id',updateGymPlan)
+gymPlanRouter.delete('/delete',deleteGymPlan)
+gymPlanRouter.patch('/update',updateGymPlan)
 
 
 

@@ -14,7 +14,7 @@ const prodSchema = new Schema({
             required: true
         },
         prodImage: {
-            type: String,
+            type: [String],
             required: true
         }
     }
