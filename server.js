@@ -21,6 +21,7 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
+app.use(express.static('images'))
 
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
