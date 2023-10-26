@@ -1,4 +1,6 @@
+import Categories from "../models/categories.js";
 import Regime from "../models/regimeModel.js";
+
 
 export async function getAllRegimePlans(req, res) {
   try {
@@ -9,16 +11,23 @@ export async function getAllRegimePlans(req, res) {
   }
 }
 export async function addRegimePlan(req, res) {
-  const { name, description } = req.body;
-  const regimeImage = req.file.path
-  const newPlan = new Regime({
+  const { name, description, categoryName } = req.body;
+
+  const regimeImage = req.file?.path
+  const category = await Categories.findOne({name: categoryName})
+ 
+  
+  const data = new Regime({
     name: name,
     description: description,
-    image:regimeImage
+    image:regimeImage,
+    category: category._id
   });
   try {
-    await newPlan.save();
-    res.json({ message: "New plan have been created", data: newPlan });
+    await data.save()
+    const newPlanId = data._id
+    await Categories.updateOne({_id: category._id}, {$push: {regime: newPlanId}})
+    res.json({ message: "New plan have been created", data: data });
   } catch (error) {
     console.log(error);
   }
@@ -27,15 +36,19 @@ export async function addRegimePlan(req, res) {
     const id = req.body.id;
     if (id) {
       const target = await Regime.findOne({ _id: id });
-      const { name = target.name, description = target.description } = req.body;
+
+      const { name = target.name, description = target.description, categoryName } = req.body;
       const regimeImage = req.file?.path || target.image;
-  
+      const category = categoryName ? await Categories.findOne({name: categoryName}) : target 
       try {
-        await Regime.updateOne(
+       const data =  await Regime.findOneAndUpdate(
           { _id: id },
-          { name: name, description: description, image: regimeImage }
+          { name: name, description: description, image: regimeImage, category: category._id },{new: true}
         );
-        res.json({ message:"Updated Successfuly" });
+        
+        
+        await Categories.updateOne({_id: category._id}, {$push: {regime: id}})
+        res.json({ message:"Updated Successfuly", data: data });
       } catch (error) {
         console.log(error);
       }
@@ -58,4 +71,11 @@ export async function removeRegimePlan(req,res){
     }else{
       res.json({message: "Provide an id"})
     }
+}
+export async function getRegimePlanByCategory(req, res){
+  const {categoryId} = req.body
+  const category = await Categories.findOne({_id: categoryId})
+  const data = await Regime.find({_id: {$in: category.regime}})
+  res.json({data: data})
+
 }

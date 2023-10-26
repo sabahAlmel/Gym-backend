@@ -8,5 +8,6 @@ import { Schema, model } from "mongoose";
       data: Buffer,
       type: String,
     },
+  category:{type:Schema.Types.ObjectId, ref:"Categories"}
  })
  export default model('Regime Plans', regimeSchema)
