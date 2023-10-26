@@ -8,6 +8,7 @@ import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
 
 import "dotenv/config";
+import categoriesRouter from "./src/routes/categoriesRouter.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -28,3 +29,4 @@ app.use("/regime", regimeRouter);
 app.use("/products", productsRouter);
 app.use("/socials", socialsRouter);
 app.use("/gymPlans", gymPlansRouter);
+app.use("/categories", categoriesRouter)
