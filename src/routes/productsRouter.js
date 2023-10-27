@@ -6,6 +6,7 @@ import { getAllProds } from '../controllers/productController.js'
 import { getOneProd } from '../controllers/productController.js'
 import { removeProd } from '../controllers/productController.js'
 import { editProd } from '../controllers/productController.js'
+import { getProdsByCategory } from '../controllers/productController.js'
 
 
 const productRouter = express.Router()
@@ -15,6 +16,7 @@ productRouter.get('/read', getAllProds)
 productRouter.get('/show-one/:id', getOneProd)
 productRouter.patch('/update', upload.array('prodImage'), editProd)
 productRouter.delete('/delete', removeProd)
+productRouter.get('/read/category', getProdsByCategory)
 
 export default productRouter
 

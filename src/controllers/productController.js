@@ -1,20 +1,26 @@
-
+import categories from '../models/categories.js'
 import product from '../models/productModel.js'
 
 //create product
 const createProd = async (req, res) => {
-    const { prodName, prodPrice } = req.body
+    const { prodName, prodPrice, categoryName, prodDescription } = req.body
     const files = req.files
     const prodImage = files.map(item => item.path)
+    const category = await categories.findOne({ name: categoryName })
+
+    if (!categoryName)
+        return res.status(404).send(`Category ${categoryName} is empty or not found!`)
 
     if (!prodName || !prodPrice || !prodImage)
         return res.status(400).send('All fields are required!')
 
     try {
         const newProd = await product.create({
-            prodName,
-            prodPrice,
-            prodImage
+            prodName: prodName,
+            prodPrice: prodPrice,
+            prodImage: prodImage,
+            prodCategory: category._id,
+            prodDescription: prodDescription
         })
         res.status(201).json({ data: newProd })
 
@@ -72,17 +78,20 @@ const removeProd = async (req, res) => {
 
 //update a product
 const editProd = async (req, res) => {
-    const { prodName, prodPrice } = req.body
+    const { prodName, prodPrice, categoryName, prodDescription } = req.body
     const files = req.files
     const prodId = req.body.id
     const prodImage = files.map(item=> item.path)
-    console.log(prodImage)
-    // console.log(prodName, prodPrice, prodImage)
-    if (!prodName || !prodPrice || !prodImage)
+
+    if (!prodName || !prodPrice || !prodImage.length || !categoryName || !prodDescription)
         return res.status(400).send('All fields are required!')
 
     try {
-        const updateProd = await product.findOneAndUpdate({ _id: prodId }, { prodName: req.body.prodName }, { prodPrice: req.body.prodPrice }, { prodImage: req.body.prodImage })
+        const category = await categories.findOne({ name: categoryName })
+        if (!categoryName)
+            return res.status(404).send(`Category ${categoryName} is not found!`)
+
+        const updateProd = await product.findOneAndUpdate({ _id: prodId }, { prodName: req.body.prodName }, { prodPrice: req.body.prodPrice }, { prodImage: req.body.prodImage }, { prodCategory: category._id }, { prodDescription: req.body.prodDescription })
         if (!updateProd)
             res.status(404).send(`Product ${prodId} is not found!`)
         else
@@ -95,5 +104,11 @@ const editProd = async (req, res) => {
     }
 }
 
+const getProdsByCategory = async (req, res) => {
+    const category = await categories.findOne({ _id: req.body.id })
+    const show = await product.findOne({ _id: {$in: category.products} })
+    res.status(200).json({ show: show })
+}
+
 //exporting functions to use in other files
-export { createProd, getAllProds, getOneProd, removeProd, editProd }
+export { createProd, getAllProds, getOneProd, removeProd, editProd, getProdsByCategory }
