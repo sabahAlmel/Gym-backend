@@ -6,11 +6,12 @@ import regimeRouter from "./src/routes/regimeRouter.js";
 import productsRouter from "./src/routes/productsRouter.js";
 import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
-
+import cors from "cors";
 import "dotenv/config";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT;
 dbConnect();
 
@@ -29,4 +30,4 @@ app.use("/regime", regimeRouter);
 app.use("/products", productsRouter);
 app.use("/socials", socialsRouter);
 app.use("/gymPlans", gymPlansRouter);
-app.use("/categories", categoriesRouter)
+app.use("/categories", categoriesRouter);
