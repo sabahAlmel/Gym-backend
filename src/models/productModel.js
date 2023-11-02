@@ -14,6 +14,14 @@ const prodSchema = new Schema({
         prodImage: {
             type: [String],
             required: true
+        },
+        prodCategory: {
+            type: Schema.Types.ObjectId,
+            ref: 'Categories'
+        },
+        prodDescription: {
+            type: String,
+            required: true
         }
     }
 )
