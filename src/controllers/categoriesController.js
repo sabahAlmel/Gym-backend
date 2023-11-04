@@ -25,7 +25,15 @@ export async function getCategories(req, res) {
     console.log(error);
   }
 }
-
+export async function getOneCategories(req, res){
+  const id = req.params.id
+  try {
+    const data = await Categories.findById(id)
+    res.json({data: data})
+  } catch (error) {
+    console.log(error)
+  }
+}
 export async function deleteCategory(req, res) {
   const id = req.body.id;
   try {

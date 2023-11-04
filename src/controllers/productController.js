@@ -105,9 +105,10 @@ const editProd = async (req, res) => {
 }
 
 const getProdsByCategory = async (req, res) => {
-    const category = await categories.findOne({ _id: req.body.id })
-    const show = await product.findOne({ _id: {$in: category.products} })
-    res.status(200).json({ show: show })
+    console.log(req.params.id)
+    // const category = await categories.findOne({ _id: req.params.id })
+    const data = await product.find({ prodCategory : req.params.id})
+    res.status(200).json({ data: data })
 }
 
 //exporting functions to use in other files

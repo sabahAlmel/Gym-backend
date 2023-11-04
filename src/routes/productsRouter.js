@@ -16,7 +16,7 @@ productRouter.get('/read', getAllProds)
 productRouter.get('/show-one/:id', getOneProd)
 productRouter.patch('/update', upload.array('prodImage'), editProd)
 productRouter.delete('/delete', removeProd)
-productRouter.get('/read/category', getProdsByCategory)
+productRouter.get('/read/category/:id', getProdsByCategory)
 
 export default productRouter
 
