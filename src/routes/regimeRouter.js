@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addRegimePlan, getAllRegimePlans, getRegimePlanByCategory, removeRegimePlan, updateRegimePlan } from "../controllers/regimeControllers.js";
+import {addRegimePlan, getAllRegimePlans, getRegimePlanByCategory, removeRegimePlan, updateRegimePlan } from "../controllers/regimeControllers.js";
 import upload from "../middlewares/upload.js";
 
 const regimeRouter = Router()
