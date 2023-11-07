@@ -10,52 +10,48 @@ export async function getAllRegimePlans(req, res) {
     console.log(error);
   }
 }
-export async function addRegimePlan(req, res) {
-  const { name, description, categoryName } = req.body;
 
-  const regimeImage = req.file?.path
-  const category = await Categories.findOne({name: categoryName})
- 
-  
-  const data = new Regime({
-    name: name,
-    description: description,
-    image:regimeImage,
-    category: category._id
-  });
+export async function addRegimePlan(req, res) {
+  const { name, description } = req.body;
+  const regimeImage = req.file?.path;
+
   try {
-    await data.save()
-    const newPlanId = data._id
-    await Categories.updateOne({_id: category._id}, {$push: {regime: newPlanId}})
-    res.json({ message: "New plan have been created", data: data });
+    const newRegimePlan = new Regime({
+      name: name,
+      description: description,
+      image: regimeImage
+    });
+
+    const savedRegimePlan = await newRegimePlan.save();
+    res.json({ message: "Regime Plan added successfully", data: savedRegimePlan });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Error adding regime plan" });
   }
 }
-  export async function updateRegimePlan(req, res) {
-    const id = req.body.id;
-    if (id) {
-      const target = await Regime.findOne({ _id: id });
 
-      const { name = target.name, description = target.description, categoryName } = req.body;
-      const regimeImage = req.file?.path || target.image;
-      const category = categoryName ? await Categories.findOne({name: categoryName}) : target 
-      try {
-       const data =  await Regime.findOneAndUpdate(
-          { _id: id },
-          { name: name, description: description, image: regimeImage, category: category._id },{new: true}
-        );
-        
-        
-        await Categories.updateOne({_id: category._id}, {$push: {regime: id}})
-        res.json({ message:"Updated Successfuly", data: data });
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      res.json({ message: "Id is not provided" });
+
+
+export async function updateRegimePlan(req, res) {
+  const id = req.body.id;
+  if (id) {
+    const target = await Regime.findOne({ _id: id });
+
+    const { name = target.name, description = target.description } = req.body;
+    const regimeImage = req.file?.path
+    try {
+     const data =  await Regime.findOneAndUpdate(
+        { _id: id },
+        { name: name, description: description, image: regimeImage},{new: true}
+      );
+      res.json({ message:"Updated Successfuly", data: data });
+    } catch (error) {
+      console.log(error);
     }
+  } else {
+    res.json({ message: "Id is not provided" });
   }
+}
   
 export async function removeRegimePlan(req,res){
     const id = req.body.id
