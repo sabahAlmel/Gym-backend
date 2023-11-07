@@ -39,7 +39,7 @@ export async function addRegimePlan(req, res) {
 
       const { name = target.name, description = target.description, categoryName } = req.body;
       const regimeImage = req.file?.path || target.image;
-      const category = categoryName ? await Categories.findOne({name: categoryName}) : target 
+      const category = categoryName ? await Categories.findOne({name: categoryName}) : target
       try {
        const data =  await Regime.findOneAndUpdate(
           { _id: id },
