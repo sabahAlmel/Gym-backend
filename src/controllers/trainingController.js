@@ -10,7 +10,8 @@ export async function getTrainingServices(req, res) {
 }
 export async function addTrainingService(req, res) {
   const { name, description } = req.body;
-  const trainingImg = req.file?.path || "";
+  const trainingImg = req.file.path
+  console.log(req.file)
 
   try {
     await Training.create({
