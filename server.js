@@ -23,7 +23,6 @@ app.listen(port, () => {
 
 app.use("/images", express.static("images"));
 
-app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use("/training", trainingRouter);
 app.use("/regime", regimeRouter);
