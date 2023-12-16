@@ -1,11 +1,19 @@
 import express from "express";
+// import {
+//   addCategory,
+//   deleteCategory,
+//   getCategories,
+//   getOneCategories,
+//   updateCategory,
+// } from "../controllers/categoriesController.js";
+
 import {
   addCategory,
   deleteCategory,
   getCategories,
   getOneCategories,
   updateCategory,
-} from "../controllers/categoriesController.js";
+} from "../controllers/categoriesControllerPrisma.js";
 
 const categoriesRouter = express.Router();
 
