@@ -25,3 +25,16 @@ model Product {
   prodCategoryId Int
   prodDescription String
 }
+model GymPlan {
+  id Int       @id @default(autoincrement())
+  title String
+  price Int
+  feature Feature[]
+}
+
+model Feature {
+  id Int       @id @default(autoincrement())
+  name String
+  gymPlanId Int
+  gymPlan GymPlan @relation(fields: [gymPlanId], references: [id], onDelete: Cascade)
+}
