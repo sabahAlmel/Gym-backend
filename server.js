@@ -8,7 +8,9 @@ import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
 import cors from "cors";
 import "dotenv/config";
+import { signIn } from "./src/controllers/signIn.contorller.js";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
+import { userRouter } from "./src/routes/user.router.js";
 
 const app = express();
 app.use(cors());
@@ -30,3 +32,5 @@ app.use("/products", productsRouter);
 app.use("/socials", socialsRouter);
 app.use("/gymPlans", gymPlansRouter);
 app.use("/categories", categoriesRouter);
+app.use("/users", userRouter);
+app.post("/signin", signIn);
