@@ -5,11 +5,11 @@ import express from "express";
 // import{deleteGymPlan} from "../controllers/gymPlanController.js"
 // import{updateGymPlan}from "../controllers/gymPlanController.js"
 
-import { createGymPlan } from "../controllers/gymPlanControllerPrisma.js";
-import { getAllGymPlans } from "../controllers/gymPlanControllerPrisma.js";
-import { getGymPlanById } from "../controllers/gymPlanControllerPrisma.js";
-import { deleteGymPlan } from "../controllers/gymPlanControllerPrisma.js";
-import { updateGymPlan } from "../controllers/gymPlanControllerPrisma.js";
+import { createGymPlan } from "../controllers/gymPlanControllerSequelize.js";
+import { getAllGymPlans } from "../controllers/gymPlanControllerSequelize.js";
+import { getGymPlanById } from "../controllers/gymPlanControllerSequelize.js";
+import { deleteGymPlan } from "../controllers/gymPlanControllerSequelize.js";
+import { updateGymPlan } from "../controllers/gymPlanControllerSequelize.js";
 
 const gymPlanRouter = express.Router();
 

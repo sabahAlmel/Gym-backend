@@ -8,6 +8,8 @@ import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
 import cors from "cors";
 import "dotenv/config";
+import "./src/associations.js";
+import sequelize from "./src/config/sequelizeConnections.js";
 import { signIn } from "./src/controllers/signIn.contorller.js";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
 import { userRouter } from "./src/routes/user.router.js";
@@ -18,6 +20,13 @@ const port = process.env.PORT;
 dbConnect();
 
 app.use(express.json());
+
+try {
+  await sequelize.authenticate();
+  console.log("Connection established");
+} catch (error) {
+  console.log("Unable to connect to database");
+}
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

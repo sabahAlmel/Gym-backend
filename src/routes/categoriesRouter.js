@@ -13,7 +13,7 @@ import {
   getCategories,
   getOneCategories,
   updateCategory,
-} from "../controllers/categoriesControllerPrisma.js";
+} from "../controllers/categoriesControllerSequelize.js";
 
 const categoriesRouter = express.Router();
 

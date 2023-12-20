@@ -1,9 +1,7 @@
-import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-const prisma = new PrismaClient();
+import Users from "../models/userSequelize.js";
 
 function removeImage(image) {
   fs.unlink(image, (err) => {
@@ -17,13 +15,11 @@ function removeImage(image) {
 
 async function getAllUsers(req, res) {
   try {
-    let getAll = await prisma.User.findMany();
+    let getAll = await Users.findAll();
     return res.status(200).json(getAll);
   } catch (error) {
     console.error("Error", error);
     res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -38,32 +34,44 @@ async function addNewUser(req, res) {
   }
 
   try {
-    if (!user.firstName || !user.lastName || !user.userName || !user.password) {
+    if (
+      !user.firstName ||
+      !user.lastName ||
+      !user.email ||
+      !user.password ||
+      !req.body.verifyPassword
+    ) {
       return res.status(400).json({ error: "missing required property" });
     } else {
       let passExpression = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
-      let userNameExpression = /^[a-zA-Z][a-zA-Z0-9]{5,11}$/;
+      let emailExpression = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if (!user.password.match(passExpression)) {
         return res.status(400).json({
           error:
             "password should start with letter and has 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter",
         });
       }
-      if (!user.userName.match(userNameExpression)) {
+      if (!user.email.match(emailExpression)) {
         return res.status(400).json({
-          error:
-            "Invalid username. Please ensure it starts with a letter, is between 6 and 12 characters, and contains at least one numeric digit.",
+          error: "Invalid email. it should be like test12@gmail.com",
         });
+      }
+      if (user.password !== req.body.verifyPassword) {
+        return res.status(400).json({ error: "Passwords do not match" });
       } else {
+        let findUser = await Users.findOne({
+          where: { email: user.email },
+        });
+        if (findUser) {
+          return res.status(400).json({ error: "email is already exist" });
+        }
         user.image = image;
         try {
           const hashedPass = await bcrypt.hash(user.password, 10);
-          const newUser = await prisma.User.create({
-            data: {
-              ...user,
-              password: hashedPass,
-              role: user.role,
-            },
+          const newUser = await Users.create({
+            ...user,
+            password: hashedPass,
+            role: user.role,
           });
           const token = jwt.sign(
             { role: newUser.role, userId: newUser.id },
@@ -72,12 +80,6 @@ async function addNewUser(req, res) {
           );
           return res.status(200).json({ newUser, token });
         } catch (error) {
-          if (
-            error.code === "P2002" &&
-            error.meta?.target?.includes("userName")
-          ) {
-            return res.status(400).json({ error: "Username is already taken" });
-          }
           console.error(error);
           return res.status(500).json({ error: "Error creating user" });
         }
@@ -86,8 +88,6 @@ async function addNewUser(req, res) {
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -97,7 +97,7 @@ async function updateUser(req, res) {
   let newImage;
   user.id = req.user.userId;
 
-  const found = await prisma.User.findUnique({ where: { id: user.id } });
+  const found = await User.findOne({ where: { id: user.id } });
   if (!req.file) {
     newImage = found.image;
   } else if (req.file) {
@@ -111,8 +111,8 @@ async function updateUser(req, res) {
     }
     return res.status(400).json({ error: "user not found" });
   }
-  if (user.userName) {
-    return res.status(400).json({ error: "you can't update your username" });
+  if (user.email) {
+    return res.status(400).json({ error: "you can't update your email" });
   }
   if (req.user.role !== "admin") {
     if (user.role) {
@@ -125,7 +125,7 @@ async function updateUser(req, res) {
       const hashedPass = await bcrypt.hash(user.password, 10);
       user.password = hashedPass;
     }
-    await prisma.User.update({ data: { ...user } }, { where: { id: user.id } });
+    await Users.update({ ...user }, { where: { id: user.id } });
     return res.status(200).json(user);
   } catch (err) {
     console.error("could not update user " + err);
@@ -133,20 +133,18 @@ async function updateUser(req, res) {
       removeImage(newImage);
     }
     return res.status(500).json({ error: "Server error while updating user" });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 async function deleteUser(req, res) {
   let id = req.user.userId;
   try {
-    const user = await prisma.User.findUnique({ where: { id: id } });
+    const user = await Users.findOne({ where: { id: id } });
     if (!user) {
       return res.status(404).json({ error: "user not found" });
     }
     const image = user.image;
-    await prisma.User.delete({ where: { id: id } });
+    await user.destroy();
 
     removeImage(image);
     console.log("Successfully deleted record.");
@@ -154,14 +152,12 @@ async function deleteUser(req, res) {
   } catch (error) {
     console.error("Failed to delete record:", error);
     return res.status(400).json("not deleted");
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 async function getOneUser(req, res) {
   try {
-    const data = await prisma.User.findUnique({
+    const data = await Users.findOne({
       where: { id: req.user.userId },
     });
     console.log(data);
@@ -172,8 +168,6 @@ async function getOneUser(req, res) {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 export { getAllUsers, addNewUser, updateUser, deleteUser, getOneUser };

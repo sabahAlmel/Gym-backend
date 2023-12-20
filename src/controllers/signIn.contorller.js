@@ -1,18 +1,16 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import Users from "../models/userSequelize.js";
 
 export async function signIn(req, res) {
   try {
-    const { username, password } = req.body;
-    if (!(username && password)) {
+    const { email, password } = req.body;
+    if (!(email && password)) {
       return res.status(400).send("All inputs are required");
     }
-    const user = await prisma.User.findUnique({
-      where: { userName: username },
+    const user = await Users.findOne({
+      where: { email: email },
     });
     if (!user) {
       res.status(404).json({ message: "User Not Found!" });
@@ -24,7 +22,9 @@ export async function signIn(req, res) {
           process.env.TOKEN,
           { expiresIn: "24h" }
         );
-        res.status(200).json({ token });
+        const { lastName, firstName, role, image, email } = user;
+        let newUser = { firstName, lastName, email, role, image };
+        res.status(200).json({ token, newUser });
       } else {
         res.status(403).json({ message: "Wrong credentials" });
       }

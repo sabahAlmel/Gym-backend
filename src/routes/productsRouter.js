@@ -7,12 +7,15 @@ import upload from "../middlewares/upload.js";
 // import { removeProd } from '../controllers/productController.js'
 // import { editProd } from '../controllers/productController.js'
 // import { getProdsByCategory } from '../controllers/productController.js'
-import { createProd } from "../controllers/productControllerPrisma.js";
-import { getAllProds } from "../controllers/productControllerPrisma.js";
-import { getOneProd } from "../controllers/productControllerPrisma.js";
-import { removeProd } from "../controllers/productControllerPrisma.js";
-import { editProd } from "../controllers/productControllerPrisma.js";
-import { getProdsByCategory } from "../controllers/productControllerPrisma.js";
+
+import {
+  createProd,
+  getAllProds,
+  getOneProd,
+  removeProd,
+  editProd,
+  getProdsByCategory,
+} from "../controllers/productContorllerSequelize.js";
 
 const productRouter = express.Router();
 
