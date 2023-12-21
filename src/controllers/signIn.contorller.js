@@ -1,7 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import Users from "../models/userSequelize.js";
+import db from "../../models/index.js";
+const { userModel } = db;
 
 export async function signIn(req, res) {
   try {
@@ -9,7 +10,7 @@ export async function signIn(req, res) {
     if (!(email && password)) {
       return res.status(400).send("All inputs are required");
     }
-    const user = await Users.findOne({
+    const user = await userModel.findOne({
       where: { email: email },
     });
     if (!user) {

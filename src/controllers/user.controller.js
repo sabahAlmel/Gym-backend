@@ -1,7 +1,8 @@
 import fs from "fs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Users from "../models/userSequelize.js";
+import db from "../../models/index.js";
+const { userModel } = db;
 
 function removeImage(image) {
   fs.unlink(image, (err) => {
@@ -15,7 +16,7 @@ function removeImage(image) {
 
 async function getAllUsers(req, res) {
   try {
-    let getAll = await Users.findAll();
+    let getAll = await userModel.findAll();
     return res.status(200).json(getAll);
   } catch (error) {
     console.error("Error", error);
@@ -59,7 +60,7 @@ async function addNewUser(req, res) {
       if (user.password !== req.body.verifyPassword) {
         return res.status(400).json({ error: "Passwords do not match" });
       } else {
-        let findUser = await Users.findOne({
+        let findUser = await userModel.findOne({
           where: { email: user.email },
         });
         if (findUser) {
@@ -68,7 +69,7 @@ async function addNewUser(req, res) {
         user.image = image;
         try {
           const hashedPass = await bcrypt.hash(user.password, 10);
-          const newUser = await Users.create({
+          const newUser = await userModel.create({
             ...user,
             password: hashedPass,
             role: user.role,
@@ -125,7 +126,7 @@ async function updateUser(req, res) {
       const hashedPass = await bcrypt.hash(user.password, 10);
       user.password = hashedPass;
     }
-    await Users.update({ ...user }, { where: { id: user.id } });
+    await userModel.update({ ...user }, { where: { id: user.id } });
     return res.status(200).json(user);
   } catch (err) {
     console.error("could not update user " + err);
@@ -139,7 +140,7 @@ async function updateUser(req, res) {
 async function deleteUser(req, res) {
   let id = req.user.userId;
   try {
-    const user = await Users.findOne({ where: { id: id } });
+    const user = await userModel.findOne({ where: { id: id } });
     if (!user) {
       return res.status(404).json({ error: "user not found" });
     }
@@ -157,7 +158,7 @@ async function deleteUser(req, res) {
 
 async function getOneUser(req, res) {
   try {
-    const data = await Users.findOne({
+    const data = await userModel.findOne({
       where: { id: req.user.userId },
     });
     console.log(data);

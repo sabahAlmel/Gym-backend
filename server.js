@@ -1,36 +1,39 @@
 import express, { urlencoded } from "express";
-import dbConnect from "./src/config/dbConnection.js";
-
+// import dbConnect from "./src/config/dbConnection.js";
 import trainingRouter from "./src/routes/trainingRouter.js";
 import regimeRouter from "./src/routes/regimeRouter.js";
 import productsRouter from "./src/routes/productsRouter.js";
 import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
 import cors from "cors";
+import db from "./models/index.js";
 import "dotenv/config";
-import "./src/associations.js";
-import sequelize from "./src/config/sequelizeConnections.js";
 import { signIn } from "./src/controllers/signIn.contorller.js";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
 import { userRouter } from "./src/routes/user.router.js";
 
 const app = express();
 app.use(cors());
-const port = process.env.PORT;
-dbConnect();
-
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
+const PORT = process.env.PORT || 3001; // dbConnect();
 try {
-  await sequelize.authenticate();
-  console.log("Connection established");
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+
+  await db.sequelize.authenticate();
+  console.log("Connection has been established successfully.");
+
+  // await db.sequelize.sync({ alter: true });
+  console.log("Database synced!");
 } catch (error) {
-  console.log("Unable to connect to database");
+  console.error(error);
 }
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Listening on port ${port}`);
+// });
 
 app.use("/images", express.static("images"));
 

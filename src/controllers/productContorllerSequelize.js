@@ -1,5 +1,5 @@
-import Product from "../models/productsSequelize.js";
-import Category from "../models/categoriesSequelize.js";
+import db from "../../models/index.js";
+const { categoriesModel, productModel } = db;
 
 export const createProd = async (req, res) => {
   const { prodName, prodPrice, categoryName, prodDescription } = req.body;
@@ -12,7 +12,7 @@ export const createProd = async (req, res) => {
   }
 
   try {
-    const category = await Category.findOne({
+    const category = await categoriesModel.findOne({
       where: {
         name: categoryName,
       },
@@ -22,12 +22,11 @@ export const createProd = async (req, res) => {
       return res.status(404).send(`Category ${categoryName} is not found!`);
     }
 
-    const newProd = await Product.create({
+    const newProd = await productModel.create({
       prodName,
       prodPrice: parseInt(prodPrice),
       prodImage,
-      CategoryId: category.id,
-      // prodCategory: category.id,
+      categoryId: category.id,
       prodDescription,
     });
 
@@ -40,20 +39,20 @@ export const createProd = async (req, res) => {
 
 export const getAllProds = async (req, res) => {
   try {
-    const prods = await Product.findAll({
-      include: { model: Category },
+    const prods = await productModel.findAll({
+      include: categoriesModel,
     });
     res.status(200).send(prods);
   } catch (error) {
     console.log("Error in displaying data: ", error);
-    res.status(500).send("Internal Server Error!");
+    res.status(500).send("Internal Server Error!" + error.message);
   }
 };
 
 export const getOneProd = async (req, res) => {
   const prodId = req.params.id;
   try {
-    const prod = await Product.findByPk(
+    const prod = await productModel.findByPk(
       { where: { id: prodId } },
       {
         include: { model: Category },
@@ -72,7 +71,7 @@ export const removeProd = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const deleteProd = await Product.destroy({ where: { id: id } });
+    const deleteProd = await productModel.destroy({ where: { id: id } });
     if (deleteProd)
       res.status(200).send(`Product ${id} is removed successfully!`);
     else res.status(404).send(`Product ${id} is not found!`);
@@ -98,19 +97,18 @@ export const editProd = async (req, res) => {
     return res.status(400).send("All fields are required!");
 
   try {
-    const category = await Category.findOne({
+    const category = await categoriesModel.findOne({
       where: { name: categoryName },
     });
     if (!category)
       return res.status(404).send(`Category ${categoryName} is not found!`);
 
-    const updateProd = await Product.update(
+    const updateProd = await productModel.update(
       {
         prodName,
         prodPrice: parseInt(prodPrice),
         prodImage,
-        CategoryId: category.id,
-        // prodCategory: category.id,
+        categoryId: category.id,
         prodDescription,
       },
       { where: { id: parseInt(prodId) } }
@@ -126,9 +124,9 @@ export const editProd = async (req, res) => {
 
 export const getProdsByCategory = async (req, res) => {
   try {
-    const data = await Product.findAll({
+    const data = await productModel.findAll({
       where: {
-        CategoryId: parseInt(req.params.id),
+        categoryId: parseInt(req.params.id),
       },
     });
     res.status(200).json({ data });

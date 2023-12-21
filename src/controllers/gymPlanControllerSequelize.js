@@ -1,4 +1,6 @@
-import GymPlan from "../models/gymPlanSequelize.js";
+import db from "../../models/index.js";
+const { gymPlanModel } = db;
+
 export const createGymPlan = async (req, res) => {
   const { title, price, feature } = req.body;
   if (!title || !price || !feature) {
@@ -6,7 +8,7 @@ export const createGymPlan = async (req, res) => {
   }
 
   try {
-    const newGymPlan = await GymPlan.create({
+    const newGymPlan = await gymPlanModel.create({
       title,
       price: parseInt(price),
       feature,
@@ -21,7 +23,7 @@ export const createGymPlan = async (req, res) => {
 
 export const getAllGymPlans = async (req, res) => {
   try {
-    const gymPlans = await GymPlan.findAll();
+    const gymPlans = await gymPlanModel.findAll();
     res.status(200).json(gymPlans);
   } catch (error) {
     console.error("Error getting plans:", error);
@@ -33,7 +35,7 @@ export const getGymPlanById = async (req, res) => {
   const { planId } = req.body;
   console.log(req.body);
   try {
-    const gymPlan = await GymPlan.findByPk({ id: planId });
+    const gymPlan = await gymPlanModel.findByPk({ id: planId });
     if (gymPlan) {
       res.status(200).json(gymPlan);
     } else {
@@ -48,7 +50,7 @@ export const getGymPlanById = async (req, res) => {
 export const deleteGymPlan = async (req, res) => {
   const planId = req.body.id;
   try {
-    const deleteGymPlan = await GymPlan.destroy({ where: { id: planId } });
+    const deleteGymPlan = await gymPlanModel.destroy({ where: { id: planId } });
     if (deleteGymPlan) {
       res.status(200).json(`Plan ${planId} is removed successfully`);
     } else {
@@ -66,7 +68,7 @@ export const updateGymPlan = async (req, res) => {
   if (!title || !price || !feature)
     return res.status(400).json({ mssg: "fields are required" });
   try {
-    const updateGymPlan = await GymPlan.update(
+    const updateGymPlan = await gymPlanModel.update(
       { title, price: parseInt(price), feature },
       { where: { id: planId } }
     );
