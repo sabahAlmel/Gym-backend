@@ -1,7 +1,7 @@
 'use strict';
 import { Model } from "sequelize";
-export default  (sequelize, DataTypes) => {
-  class regimeSequelize extends Model {
+export default (sequelize, DataTypes) => {
+  class gymPlan extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,16 +9,15 @@ export default  (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      regimeSequelize.belongsTo(models.regimeModel,{ onDelete:"CASCADE"})
     }
   }
-  regimeSequelize.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    image: DataTypes.STRING
+  gymPlan.init({
+    title: DataTypes.STRING,
+    price: DataTypes.INTEGER,
+    feature: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'regimeSequelize',
+    modelName: 'gymPlan',
   });
-  return regimeSequelize;
+  return gymPlan;
 };

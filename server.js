@@ -5,7 +5,7 @@ import regimeRouter from "./src/routes/regimeRouter.js";
 import productsRouter from "./src/routes/productsRouter.js";
 import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
-import userRouter from "./src/routes/userRouter.js";
+// import userRouter from "./src/routes/userRouter.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import db from "./models/index.js"
@@ -49,4 +49,3 @@ app.use("/products", productsRouter);
 app.use("/socials", socialsRouter);
 app.use("/gymPlans", gymPlansRouter);
 app.use("/categories", categoriesRouter);
-app.use("/user", userRouter)

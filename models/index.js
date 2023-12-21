@@ -3,12 +3,12 @@ import fs from "fs"
 import path from "path"
 import {Sequelize} from'sequelize';
 import process from'process';
-import gymplansequelize from "./gymplansequelize.js";
-import categorysequelize from "./categorysequelize.js";
-import productssequelize from "./productssequelize.js";
-import regimesequelize from "./regimesequelize.js";
-import trainingsequelize from "./trainingsequelize.js";
-import usersequelize from "./usersequelize.js";
+import gymplan from "./gymplan.js";
+import category from "./category.js";
+import product from "./product.js";
+import regime from "./regime.js";
+import training from "./training.js";
+import user from "./user.js";
 // const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 // import config from(__dirname + '/../config/config.json')[env];
@@ -25,12 +25,12 @@ const sequelize = new Sequelize(
   }
 );
 
-const gymPlanModel=gymplansequelize(sequelize,Sequelize)
-const categoriesModel=categorysequelize(sequelize,Sequelize)
-const productModel=productssequelize(sequelize,Sequelize)
-const regimeModel=regimesequelize(sequelize,Sequelize)
-const trainingModel=trainingsequelize(sequelize,Sequelize)
-const userModel=usersequelize(sequelize,Sequelize)
+const gymPlanModel=gymplan(sequelize,Sequelize)
+const categoriesModel=category(sequelize,Sequelize)
+const productModel=product(sequelize,Sequelize)
+const regimeModel=regime(sequelize,Sequelize)
+const trainingModel=training(sequelize,Sequelize)
+const userModel=user(sequelize,Sequelize)
 
 const db={
   sequelize,
