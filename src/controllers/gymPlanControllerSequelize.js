@@ -1,30 +1,29 @@
-import GymPlan from "../models/gymPlanModel.js";
+import db from "../../models/index.js";
+const { gymPlanModel } = db;
 
-// create plan
 export const createGymPlan = async (req, res) => {
   const { title, price, feature } = req.body;
-  // check if present in the request body
   if (!title || !price || !feature) {
     return res.status(400).json({ error: "Missing required fields" });
   }
+
   try {
-    //create plan
-    const newGymPlan = await GymPlan.create({
+    const newGymPlan = await gymPlanModel.create({
       title,
-      price,
+      price: parseInt(price),
       feature,
     });
+
     res.status(200).json(newGymPlan);
   } catch (error) {
     console.error("Error", error);
-    res.status(500).json({ error: "Warning" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-// get all plan
 export const getAllGymPlans = async (req, res) => {
   try {
-    const gymPlans = await GymPlan.find();
+    const gymPlans = await gymPlanModel.findAll();
     res.status(200).json(gymPlans);
   } catch (error) {
     console.error("Error getting plans:", error);
@@ -32,12 +31,11 @@ export const getAllGymPlans = async (req, res) => {
   }
 };
 
-// get plan by id
 export const getGymPlanById = async (req, res) => {
-  const { planID } = req.body;
+  const { planId } = req.body;
   console.log(req.body);
   try {
-    const gymPlan = await GymPlan.findById({ _id: planID });
+    const gymPlan = await gymPlanModel.findByPk({ id: planId });
     if (gymPlan) {
       res.status(200).json(gymPlan);
     } else {
@@ -49,15 +47,14 @@ export const getGymPlanById = async (req, res) => {
   }
 };
 
-// delete by id
 export const deleteGymPlan = async (req, res) => {
   const planId = req.body.id;
   try {
-    const deletGymPlan = await GymPlan.findOneAndDelete({ _id: planId });
-    if (deletGymPlan) {
-      res.status(200).json(`plan ${planId} is remove successfuly`);
+    const deleteGymPlan = await gymPlanModel.destroy({ where: { id: planId } });
+    if (deleteGymPlan) {
+      res.status(200).json(`Plan ${planId} is removed successfully`);
     } else {
-      res.status(404).json(`plan ${planId} is not found`);
+      res.status(404).json(`Plan ${planId} is not found`);
     }
   } catch (error) {
     console.error("Error deleting the plan", error);
@@ -65,16 +62,15 @@ export const deleteGymPlan = async (req, res) => {
   }
 };
 
-//update plan
 export const updateGymPlan = async (req, res) => {
   const { title, price, feature } = req.body;
   const planId = req.body.id;
   if (!title || !price || !feature)
     return res.status(400).json({ mssg: "fields are required" });
   try {
-    const updateGymPlan = await GymPlan.findByIdAndUpdate(
-      { _id: planId },
-      { title, price, feature }
+    const updateGymPlan = await gymPlanModel.update(
+      { title, price: parseInt(price), feature },
+      { where: { id: planId } }
     );
 
     if (!updateGymPlan) res.status(404).json(`Plan ${planId} is not found`);
