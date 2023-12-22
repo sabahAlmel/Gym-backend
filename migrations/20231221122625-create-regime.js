@@ -2,24 +2,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('gymPlanSequelizes', {
+    await queryInterface.createTable('regimes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      price: {
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      image: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      categoryId:{
         type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      feature: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        allowNull:false,
+        references:{
+          model:"categories",
+          key:'id'
+        },
+        onUpdate:'CASCADE',
+        onDelete:'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('gymPlanSequelizes');
+    await queryInterface.dropTable('regimes');
   }
 };

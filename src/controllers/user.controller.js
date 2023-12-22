@@ -69,16 +69,18 @@ async function addNewUser(req, res) {
         user.image = image;
         try {
           const hashedPass = await bcrypt.hash(user.password, 10);
-          const newUser = await userModel.create({
+          const newOne = await userModel.create({
             ...user,
             password: hashedPass,
             role: user.role,
           });
           const token = jwt.sign(
-            { role: newUser.role, userId: newUser.id },
+            { role: newOne.role, userId: newOne.id },
             process.env.TOKEN,
             { expiresIn: "24h" }
           );
+          const { lastName, firstName, role, image, email } = newOne;
+          let newUser = { firstName, lastName, email, role, image };
           return res.status(200).json({ newUser, token });
         } catch (error) {
           console.error(error);

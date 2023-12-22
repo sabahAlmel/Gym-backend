@@ -11,6 +11,7 @@ import "dotenv/config";
 import { signIn } from "./src/controllers/signIn.contorller.js";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
 import { userRouter } from "./src/routes/user.router.js";
+import { addUser } from "./src/controllers/googleAuth.js";
 
 const app = express();
 app.use(cors());
@@ -46,3 +47,4 @@ app.use("/gymPlans", gymPlansRouter);
 app.use("/categories", categoriesRouter);
 app.use("/users", userRouter);
 app.post("/signin", signIn);
+app.post("/google", addUser);
