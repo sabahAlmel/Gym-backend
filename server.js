@@ -11,6 +11,9 @@ import cookieParser from "cookie-parser";
 import db from "./models/index.js"
 import "dotenv/config";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express();
 app.use(cors());

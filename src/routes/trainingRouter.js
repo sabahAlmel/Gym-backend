@@ -10,8 +10,8 @@ import upload from "../middlewares/upload.js";
 const trainingRouter = express.Router();
 
 trainingRouter.get("/read", getTrainingServices);
-trainingRouter.post("/add", upload.single("trainingImg"), addTrainingService);
+trainingRouter.post("/add", upload.single("image"), addTrainingService);
 trainingRouter.delete("/delete", deleteTraining);
-trainingRouter.patch("/update", upload.single("trainingImg"), updateTraining);
+trainingRouter.patch("/update", upload.single("image"), updateTraining);
 
 export default trainingRouter;

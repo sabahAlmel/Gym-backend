@@ -52,4 +52,4 @@ Object.keys(db).forEach((modelName) => {
 });
 
 
-export default db
+export default db;

@@ -20,9 +20,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "build": "npm install"
+    "build": "npm install",
+    "start": "node server.js"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "name": "gym-backend",
+  "description": "This is the backend repo for the first project",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "",
+  "license": "ISC"
 }
