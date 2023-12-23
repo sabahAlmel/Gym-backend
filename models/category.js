@@ -10,7 +10,7 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
      category.hasMany(models.productModel, {as:"products", onDelete:"CASCADE"})
-     category.hasMany(models.regimeModel, {onDelete:"CASCADE"})
+    //  category.hasMany(models.regimeModel, {onDelete:"CASCADE"})
     }
   }
   category.init({
