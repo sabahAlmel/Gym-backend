@@ -7,7 +7,7 @@ import socialsRouter from "./src/routes/socialsRouter.js";
 import gymPlansRouter from "./src/routes/gymPlansRouter.js";
 // import userRouter from "./src/routes/userRouter.js";
 import cors from "cors";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 import db from "./models/index.js"
 import "dotenv/config";
 import categoriesRouter from "./src/routes/categoriesRouter.js";
@@ -15,7 +15,7 @@ import categoriesRouter from "./src/routes/categoriesRouter.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser())
+// app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 3001;// dbConnect();
 try {
