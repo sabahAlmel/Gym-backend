@@ -1,14 +1,12 @@
 import db from '../../models/index.js'
 import Sequelize from 'sequelize'
-import training from '../../models/training.js';
+import Training from '../../models/training.js';
 
 const {trainingModel} =db;
 
 export const getTrainingServices = async (req, res) => {
   try {
-    const trainingServices = await trainingModel.findAll({
-      order: [['createdAt', 'DESC']],
-    });
+    const trainingServices = await trainingModel.findAll();
 
     return res.status(200).json({
       msg: 'Fetched all training services successfully',
@@ -23,23 +21,29 @@ export const getTrainingServices = async (req, res) => {
   }
 };
 export const addTrainingService = async (req, res) => {
-  const { name, description } = req.body;
-  let trainingImage
-  if(req.file){
-    trainingImage=req.file.path
-  }else{
-    trainingImage="images/1698229764637.png"
-  }
-
   try {
-    const newTraining=
-    await trainingModel.create({
+    console.log('Request body:', req.body);
+    console.log('Request file:', req.file);
+
+    const { name, description } = req.body;
+    let image;
+
+    if (req.file && req.file.path) {
+      image = req.file.path;
+    } else {
+      console.log('No file provided in the request. Using default image path.');
+      image = "images/default-image.png";
+    }
+
+    console.log('Image path:', image);
+
+    const newTraining = await trainingModel.create({
       name: name,
       description: description,
-      image: trainingImage,
+      image: image,
     });
 
-    res.json({ message: "Created new training service" ,data:newTraining});
+    res.json({ message: "Created new training service", data: newTraining });
   } catch (error) {
     console.error('Failed to create training service:', error.message);
     res.status(500).json({ message: 'Failed', error: error.message });
@@ -95,5 +99,43 @@ export const updateTraining = async (req, res) => {
     }
   } else {
     res.status(400).json({ message: "Id is not provided" });
+  }
+};
+
+
+// export const createTraining = async (req, res) => {
+//   const { name, description } = req.body;
+//   const image = req.file.path;
+//   if (!name || !description || !image)
+//     return res.status(400).send("All fields are required!");
+
+//   try {
+//     const newTraining = await training.create({
+//       name: name,
+//       description: description,
+//       image: image,
+//     });
+//     res.status(201).json({ data: newTraining });
+//   } catch (error) {
+//     console.log("Error in saving data: ", error);
+//     res.status(500).send("Internal Server Error!");
+//   }
+// };
+
+export const createTrai = async (req, res) => {
+  const { name, description } = req.body;
+  const image = req.file.path;
+try{
+
+    const newTrai = await trainingModel.create({
+      name,
+      description,
+      image
+    });
+
+    res.status(201).json({ data: newTrai });
+  } catch (error) {
+    console.log("Error in saving data: ", error);
+    res.status(500).send("Internal Server Error!");
   }
 };
