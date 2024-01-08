@@ -4,8 +4,7 @@ import product from "../models/productModel.js";
 //create product
 const createProd = async (req, res) => {
   const { prodName, prodPrice, categoryName, prodDescription } = req.body;
-  const files = req.files;
-  const prodImage = files.map((item) => item.path);
+  const prodImage = req.file.path;
   const category = await categories.findOne({ name: categoryName });
   console.log(categoryName);
 
@@ -74,9 +73,8 @@ const removeProd = async (req, res) => {
 //update a product
 const editProd = async (req, res) => {
   const { prodName, prodPrice, categoryName, prodDescription } = req.body;
-  const files = req.files;
   const prodId = req.body.id;
-  const prodImage = files.map((item) => item.path);
+  const prodImage = req.file.path;
   console.log("name:", prodName);
   console.log("price:", prodPrice);
   console.log("desc:", prodDescription);
