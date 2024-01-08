@@ -4,7 +4,7 @@ import {
   deleteTraining,
   getTrainingServices,
   updateTraining,
-  createTrai
+ 
 } from "../controllers/trainingController.js";
 import upload from "../middlewares/upload.js";
 
