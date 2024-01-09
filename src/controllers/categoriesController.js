@@ -2,6 +2,7 @@ import Categories from "../models/categories.js";
 
 export async function addCategory(req, res) {
   const { name } = req.body;
+  console.log(req.body.name);
   const existingCategory = await Categories.findOne({ name: name });
   if (existingCategory) {
     return res.json({ message: "Category Already exists" });
@@ -25,13 +26,13 @@ export async function getCategories(req, res) {
     console.log(error);
   }
 }
-export async function getOneCategories(req, res){
-  const id = req.params.id
+export async function getOneCategories(req, res) {
+  const id = req.params.id;
   try {
-    const data = await Categories.findById(id)
-    res.json({data: data})
+    const data = await Categories.findById(id);
+    res.json({ data: data });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 export async function deleteCategory(req, res) {
@@ -46,12 +47,12 @@ export async function deleteCategory(req, res) {
 
 export async function updateCategory(req, res) {
   const { id, name } = req.body;
-    console.log(id, name)
+  console.log(id, name);
   try {
     const target = await Categories.findByIdAndUpdate(
       id,
       { name: name },
-      {new: true}
+      { new: true }
     );
     res.json({ message: "Updated successfuly", data: target });
   } catch (error) {
