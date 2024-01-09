@@ -9,7 +9,7 @@ export default  (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      regime.belongsTo(models.categoriesModel,{onDelete:"CASCADE"})
+      // regime.belongsTo(models.categoriesModel,{onDelete:"CASCADE"})
     }
   }
   regime.init({

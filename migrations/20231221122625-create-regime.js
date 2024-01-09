@@ -19,18 +19,19 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
-        allowNull: false,
+        // allowNull: false,
+        defaultValue:"../images/regime.png"
       },
-      categoryId:{
-        type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:"categories",
-          key:'id'
-        },
-        onUpdate:'CASCADE',
-        onDelete:'CASCADE'
-      },
+      // categoryId:{
+      //   type: Sequelize.INTEGER,
+      //   allowNull:false,
+      //   references:{
+      //     model:"categories",
+      //     key:'id'
+      //   },
+      //   onUpdate:'CASCADE',
+      //   onDelete:'CASCADE'
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -140,7 +140,7 @@ async function updateUser(req, res) {
 }
 
 async function deleteUser(req, res) {
-  let id = req.user.userId;
+  let id = req.body.id;
   try {
     const user = await userModel.findOne({ where: { id: id } });
     if (!user) {
@@ -148,7 +148,7 @@ async function deleteUser(req, res) {
     }
     const image = user.image;
     await user.destroy();
-
+    
     removeImage(image);
     console.log("Successfully deleted record.");
     return res.status(200).json("deleted");
